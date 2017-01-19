@@ -51,3 +51,51 @@ Download digital_ocean.ini and digital_ocean.py
 ```
 ansible -i digital_ocean.py all -m ping
 ```
+
+### Working with iterates in Ansible
+example
+```
+--- 
+- hosts: webserver 
+  remote_user: ansible 
+  tasks: 
+  - name: Ensure the HTTPd package is installed 
+    yum: 
+      name: httpd 
+      state: present 
+    become: True 
+  - name: Ensure the HTTPd service is enabled and running 
+    service: 
+      name: httpd 
+      state: started 
+      enabled: True 
+    become: True 
+  - name: Ensure HTTP can pass the firewall 
+    firewalld: 
+      service: http 
+      state: enabled 
+      permanent: True 
+      immediate: True 
+    become: True 
+  - name: Ensure HTTPS can pass the firewall 
+    firewalld: 
+      service: https 
+      state: enabled 
+      permanent: True 
+      immediate: True 
+    become: True 
+```
+#### Standard iteration - with_items
+combine latest two items
+```
+- name: Ensure HTTP and HTTPS can pass the firewall 
+    firewalld: 
+      service: '{{ item }}' 
+      state: enabled 
+      permanent: True 
+      immediate: True 
+    become: True 
+    with_items: 
+    - http 
+    - https 
+```
