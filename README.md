@@ -38,3 +38,16 @@ localhost              ansible_connection=local
 other1.example.com     ansible_connection=ssh        ansible_user=mpdehaan
 other2.example.com     ansible_connection=ssh        ansible_user=mdehaan
 ```
+
+### Working with dynamic inventory
+
+### Amazon Web Services
+Download ec2.py , ec2.ini.
+```
+ansible -i ec2.py all -m ping
+```
+### DigitalOcean
+Download digital_ocean.ini and digital_ocean.py
+```
+ansible -i digital_ocean.py all -m ping
+```
