@@ -344,3 +344,15 @@ we will use the password ansible, so let's start creating a hidden file called .
 echo 'ansible' > .password
 ansible-vault create secret.yaml
 ```
+
+other manipulation
+```
+ansible-vault --vault-password-file=.password edit secret.yaml //first time encryption
+ansible-vault --vault-password-file=.password view secret.yaml
+ansible-vault --vault-password-file=.password decrypt secret.yaml
+ansible-vault --vault-password-file=.password encrypt secret.yaml //re-encrypt
+```
+rekey, change key file
+```
+ansible-vault --vault-password-file=.password --new-vault-password-file=.newpassword rekey secret.yaml
+```
