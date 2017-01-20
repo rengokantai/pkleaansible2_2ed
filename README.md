@@ -356,3 +356,11 @@ rekey, change key file
 ```
 ansible-vault --vault-password-file=.password --new-vault-password-file=.newpassword rekey secret.yaml
 ```
+
+#### Vaults and playbooks
+decrypt
+```
+ansible-playbook site.yml --vault-password-file .password
+```
+
+
