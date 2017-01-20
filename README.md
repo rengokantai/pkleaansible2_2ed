@@ -293,3 +293,47 @@ ansible-playbook -i hosts crontab_backup.yaml --extra-vars="backup=False"
           remote_src: True 
         when: backup 
 ```
+######note
+By default, handlers are executed at the end of the playbook execution, but you can force them to be run when you want using the __meta__ task with the flush_handlers option like: - meta: flush_handlers
+
+### Tasks blocks
+```
+tasks:
+    - block:
+       - name: Ensure NTPd is present
+       yum:
+         name: ntpd
+         state: present
+       - name: Ensure NTPd is running
+       service:
+         name: ntpd
+         state: started
+       enabled: True
+     when: ansible_distribution == 'CentOS'
+```
+
+#### Defaulting undefined variables
+```
+{{ backup_disk | default("/dev/sdf") }}
+```
+other examples
+```
+{{['a', 'b', 'c', 'd'] | random}}
+```
+random
+```
+{{100 | random}}  // 0 to 100
+{{50 | random(10)}}  //10 20 30 40 50
+{{50 | random(20, 10)}}  //20 30 40 50
+```
+
+join strings
+```
+{{["This", "is", "a", "string"] | join(" ")}}
+```
+
+base64
+```
+{{variable | b64encode}}
+{{"aGFoYWhhaGE=" | b64decode}}
+```
