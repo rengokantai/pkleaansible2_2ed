@@ -337,3 +337,10 @@ base64
 {{variable | b64encode}}
 {{"aGFoYWhhaGE=" | b64decode}}
 ```
+### Security management
+#### Using Ansible vault
+we will use the password ansible, so let's start creating a hidden file called .password
+```
+echo 'ansible' > .password
+ansible-vault create secret.yaml
+```
