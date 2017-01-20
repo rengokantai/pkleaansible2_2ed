@@ -153,4 +153,17 @@ Cartesian product
 ```
 
 
-
+#### Integer loop - with_sequence
+```
+--- 
+- hosts: all 
+  remote_user: ansible 
+  tasks: 
+  - name: Create the folders /tmp/dirXY with XY from 1 to 10 
+    file: 
+      dest: '/tmp/dir{{ item }}' 
+      state: directory 
+    with_sequence: start=1 end=10 
+    become: True 
+```
+syntax : with_sequence: start=1 end=10 
