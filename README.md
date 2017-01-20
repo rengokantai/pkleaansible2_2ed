@@ -101,8 +101,56 @@ combine latest two items
 ```
 
 #### Nested loops - with_nested
+Cartesian product
+```
+--- 
+- hosts: all 
+  remote_user: ansible 
+  vars: 
+    users: 
+    - alice 
+    - bob 
+    folders: 
+    - mail 
+    - public_html 
+  tasks: 
+  - name: Ensure the users exist 
+    user: 
+      name: '{{ item }}' 
+    become: True 
+    with_items: 
+    - '{{ users }}' 
+  - name: Ensure the folders exist 
+    file: 
+      path: '/home/{{ item.0 }}/{{ item.1 }}' 
+      state: directory 
+    become: True 
+    with_nested: 
+    - '{{ users }}' 
+    - '{{ folders }}' 
+```
 
-
+#### Fileglobs loop - with_fileglobs
+```
+--- 
+- hosts: all 
+  remote_user: ansible 
+  tasks: 
+  - name: Ensure the folder /tmp/iproute2 is present 
+    file: 
+      dest: '/tmp/iproute2' 
+      state: directory 
+    become: True 
+  - name: Copy files that start with rt to the tmp folder 
+    copy: 
+      src: '{{ item }}' 
+      dest: '/tmp/iproute2' 
+      remote_src: True 
+      --- remote_src default=false, true means copy remote to remote.
+    become: True 
+    with_fileglob: 
+    - '/etc/iproute2/rt_*' 
+```
 
 
 
