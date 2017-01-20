@@ -252,4 +252,44 @@ delegate a task to local system
         become: True 
         when: ansible_os_family == 'Debian' 
 ```
+#### Boolean conditionals
+```
+--- 
+- hosts: all 
+  remote_user: ansible 
+  vars: 
+    backup: True 
+  tasks: 
+  - name: Copy the crontab in tmp if the backup variable is true 
+    copy: 
+      src: /etc/crontab 
+      dest: /tmp/crontab 
+      remote_src: True 
+    when: backup # vars: backup: True
+```
+######use command line to pass extra vars to override
+```
+ansible-playbook -i hosts crontab_backup.yaml --extra-vars="backup=False"
+```
 
+
+
+#### Checking if a variable is set
+```
+--- 
+    - hosts: all 
+      remote_user: ansible 
+      vars: 
+        backup: True 
+      tasks: 
+      - name: Check if the backup_folder is set 
+        fail: 
+          msg: 'The backup_folder needs to be set' 
+        when: backup_folder is not defined    # momorize this.  xxx is not defined
+      - name: Copy the crontab in tmp if the backup variable is true 
+        copy: 
+          src: /etc/crontab 
+          dest: '{{ backup_folder }}/crontab' 
+          remote_src: True 
+        when: backup 
+```
