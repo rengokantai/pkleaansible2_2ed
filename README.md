@@ -1,4 +1,19 @@
 # pkleaansible2_2ed
+some review:
+```
+command shell notify handlers register debug template when
+```
+for yum and apt, use k-v instead of inline style.(2.0+)  
+YES:
+```
+apt:
+  name: apache2
+  state: latest
+```
+NO:
+```
+apt: name=apache2 state=latest
+```
 ##3. Scaling to Multiple Hosts
 ### Working with inventory files
 defaults to /etc/ansible/hosts. or
@@ -215,5 +230,26 @@ delegate a task to local system
           msg: '{{ local_processes_number.stdout }}' 
 ```
 
-
+### Working with conditionals
+```
+--- 
+    - hosts: webserver 
+      remote_user: ansible 
+      tasks: 
+      - name: Print the ansible_os_family value 
+        debug: 
+          msg: '{{ ansible_os_family }}' 
+      - name: Ensure the httpd package is updated 
+        yum: 
+          name: httpd 
+          state: latest 
+        become: True 
+        when: ansible_os_family == 'RedHat' 
+      - name: Ensure the apache2 package is updated 
+        apt: 
+          name: apache2 
+          state: latest 
+        become: True 
+        when: ansible_os_family == 'Debian' 
+```
 
