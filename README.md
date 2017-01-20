@@ -194,4 +194,26 @@ syntax : with_sequence: start=1 end=10
 note msg: register.stdout
 
 ### Delegating a task
+delegate a task to local system
+```
+--- 
+    - hosts: database 
+      remote_user: ansible 
+      tasks: 
+      - name: Count processes running on the remote system 
+        shell: ps | wc -l 
+        register: remote_processes_number 
+      - name: Print remote running processes 
+        debug: 
+          msg: '{{ remote_processes_number.stdout }}' 
+      - name: Count processes running on the local system 
+        shell: ps | wc -l 
+        delegate_to: localhost 
+        register: local_processes_number 
+      - name: Print local running processes 
+        debug: 
+          msg: '{{ local_processes_number.stdout }}' 
+```
+
+
 
