@@ -146,7 +146,7 @@ Cartesian product
       src: '{{ item }}' 
       dest: '/tmp/iproute2' 
       remote_src: True 
-      --- remote_src default=false, true means copy remote to remote.
+      # remote_src default=false, true means copy remote to remote.
     become: True 
     with_fileglob: 
     - '/etc/iproute2/rt_*' 
@@ -178,15 +178,20 @@ syntax : with_sequence: start=1 end=10
       tasks: 
       - name: Count processes running on the remote system 
         shell: ps | wc -l 
+        # remote command
         register: remote_processes_number 
       - name: Print remote running processes 
         debug: 
           msg: '{{ remote_processes_number.stdout }}' 
       - name: Count processes running on the local system 
         local_action: shell ps | wc -l 
+        # local command
         register: local_processes_number 
       - name: Print local running processes 
         debug: 
           msg: '{{ local_processes_number.stdout }}' 
 ```
 note msg: register.stdout
+
+### Delegating a task
+
