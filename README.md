@@ -364,3 +364,13 @@ ansible-playbook site.yml --vault-password-file .password
 ```
 
 
+### Encrypting user passwords
+```
+vars_prompt:
+    - name: ssh_password 
+      prompt: Enter ssh_password 
+      private: True 
+      encryption: md5_crypt 
+      confirm: True 
+      salt_size: 7 
+```
